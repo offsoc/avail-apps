@@ -10,7 +10,7 @@ function useBalanceImpl (accountId: string | null): Balance | undefined {
   const { api } = useApi();
   const balancesAll = useCall<DeriveBalancesAll>(api.derive.balances?.all, [accountId]);
 
-  return balancesAll?.availableBalance;
+  return balancesAll?.transferable || balancesAll?.availableBalance;
 }
 
 export const useBalance = createNamedHook('useBalance', useBalanceImpl);
