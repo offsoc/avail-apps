@@ -9,6 +9,7 @@ import altair from './altair.js';
 import apron from './apron.js';
 import aresGladios from './ares-gladios.js';
 import aresParachain from './ares-parachain.js';
+import argon from './argon.js';
 import astar from './astar.js';
 import avail from './avail.js';
 import bajun from './bajun.js';
@@ -20,6 +21,7 @@ import bifrostParachain from './bifrost-parachain.js';
 import bitcountry from './bitcountry.js';
 import bitcountryPioneer from './bitcountry-pioneer.js';
 import bitcountryParachain from './bitcountry-rococo.js';
+import bittensor from './bittensor.js';
 import centrifuge from './centrifuge.js';
 import centrifugeChain from './centrifuge-chain.js';
 import chainx from './chainx.js';
@@ -155,6 +157,7 @@ const spec: Record<string, OverrideBundleDefinition> = {
   'ares-gladios': aresGladios,
   'ares-mars': aresParachain,
   'ares-odyssey': aresParachain,
+  argon,
   asgard: bifrostAsgard,
   astar,
   avail,
@@ -165,6 +168,7 @@ const spec: Record<string, OverrideBundleDefinition> = {
   'bifrost-parachain': bifrostParachain,
   'bitcountry-node': bitcountry,
   'bitcountry-parachain': bitcountryParachain,
+  bittensor,
   centrifuge,
   'centrifuge-chain': centrifugeChain,
   chainx,
@@ -243,10 +247,10 @@ const spec: Record<string, OverrideBundleDefinition> = {
   mathchain,
   'mathchain-galois': galois,
   messier: hyperbridge,
-  moonbase: moonbeam,
-  moonbeam,
-  moonriver: moonbeam,
-  moonshadow: moonbeam,
+  moonbase: moonbeam as OverrideBundleDefinition,
+  moonbeam: moonbeam as OverrideBundleDefinition,
+  moonriver: moonbeam as OverrideBundleDefinition,
+  moonshadow: moonbeam as OverrideBundleDefinition,
   muse,
   'mybank.network Testnet': mybank,
   mythos,
@@ -254,7 +258,7 @@ const spec: Record<string, OverrideBundleDefinition> = {
   neuroweb,
   nexus: hyperbridge,
   nftmart,
-  'node-moonbeam': moonbeam,
+  'node-moonbeam': moonbeam as OverrideBundleDefinition,
   'node-polkadex': polkadex,
   'nodle-chain': nodle,
   oak,
@@ -273,7 +277,7 @@ const spec: Record<string, OverrideBundleDefinition> = {
   'pioneer-runtime': bitcountryPioneer,
   polymesh_mainnet: polymeshMainnet,
   polymesh_testnet: polymeshTestnet,
-  'pontem-node': pontem,
+  'pontem-node': pontem as OverrideBundleDefinition,
   prism,
   'quantum-portal-network-parachain': ferrum,
   quartz,
@@ -284,7 +288,7 @@ const spec: Record<string, OverrideBundleDefinition> = {
   sapphire,
   shibuya,
   shiden,
-  snowbridge,
+  snowbridge: snowbridge as OverrideBundleDefinition,
   'sora-substrate': soraSubstrate,
   sora_ksm: soraSubstrate,
   'spacewalk-standalone': pendulum,
@@ -294,7 +298,7 @@ const spec: Record<string, OverrideBundleDefinition> = {
   steam: eave,
   subdao,
   subgame,
-  subsocial,
+  subsocial: subsocial as OverrideBundleDefinition,
   subspace,
   'substrate-contracts-node': substrateContractsNode,
   subzero: zero,
