@@ -65,11 +65,14 @@ function groupByValidator (allRewards: Record<string, DeriveStakerReward[]>): Pa
                   });
                 }
 
-                entry.available = entry.available.add(value);
+                if (!reward.isClaimed) {
+                  entry.available = entry.available.add(value);
+                }
+
                 entry.total = entry.total.add(total);
               } else {
                 grouped.push({
-                  available: value,
+                  available: !reward.isClaimed ? value : new BN(0),
                   eras: [{
                     era: reward.era,
                     isClaimed: reward.isClaimed,
@@ -241,7 +244,7 @@ function Payouts ({ className = '', historyDepth, isInElection, ownPools, ownVal
         <PayButton
           isAll
           isDisabled={isInElection}
-          payout={validators}
+          payout={validators?.filter((x) => x.eras.some((y) => !y.isClaimed))}
         />
       </Button.Group>
       <ElectionBanner isInElection={isInElection} />
