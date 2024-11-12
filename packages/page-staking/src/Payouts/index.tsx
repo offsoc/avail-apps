@@ -60,6 +60,7 @@ function groupByValidator (allRewards: Record<string, DeriveStakerReward[]>): Pa
                 } else {
                   entry.eras.push({
                     era: reward.era,
+                    isClaimed: reward.isClaimed,
                     stashes: { [stashId]: value }
                   });
                 }
@@ -71,6 +72,7 @@ function groupByValidator (allRewards: Record<string, DeriveStakerReward[]>): Pa
                   available: value,
                   eras: [{
                     era: reward.era,
+                    isClaimed: reward.isClaimed,
                     stashes: { [stashId]: value }
                   }],
                   total,
@@ -97,6 +99,7 @@ function extractStashes (allRewards: Record<string, DeriveStakerReward[]>): Payo
       stashId
     }))
     .filter(({ available }) => !available.isZero())
+    .filter(({ rewards }) => rewards.some((r) => !r.isClaimed))
     .sort((a, b) => b.available.cmp(a.available));
 }
 
@@ -251,20 +254,6 @@ function Payouts ({ className = '', historyDepth, isInElection, ownPools, ownVal
           <p>{t('If you have not claimed rewards straight after the end of the era, the validator is in the active set and you are seeing no rewards, this would mean that the reward payout transaction was made by another account on your behalf. Always check your favorite explorer to see any historic payouts made to your accounts.')}</p>
         </MarkWarning>
       )}
-      <MarkWarning
-        className='warning centered'
-        withIcon={false}
-      >
-        <p>{'The payout section is currently not working properly at the moment due to a bug in Polkadot-apps. You will see era payouts that has already been claimed, if you try to claim them you may have an "Already claimed" error while trying to trigger payouts. You can still claim and it should work properly for non claimed eras.'}</p>
-        <p>
-          {'You can follow the issue on this link '}
-          <a
-            href='https://github.com/polkadot-js/apps/issues/10677'
-            rel='noreferrer'
-            target='_blank'
-          >polkadot-js/apps/issues/10677</a>
-        </p>
-      </MarkWarning>
       <Table
         empty={!isLoadingRewards && stashes && (
           myStashesIndex
@@ -284,7 +273,7 @@ function Payouts ({ className = '', historyDepth, isInElection, ownPools, ownVal
           />
         ))}
       </Table>
-      {(myStashesIndex === 1) && !isLoadingRewards && validators && (validators.length !== 0) && (
+      {(myStashesIndex === 1) && !isLoadingRewards && validators && (validators.length !== 0) && validators.filter(({ eras }) => eras.some((e) => !e.isClaimed)).length > 0 && (
         <Table
           footer={footerVal}
           header={headerValidatorsRef.current}
