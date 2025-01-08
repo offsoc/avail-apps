@@ -1,4 +1,4 @@
-// Copyright 2017-2024 @polkadot/app-explorer authors & contributors
+// Copyright 2017-2025 @polkadot/app-explorer authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { HeaderExtended } from '@polkadot/api-derive/types';
@@ -11,6 +11,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AddressSmall, Columar, LinkExternal, MarkError, Table } from '@polkadot/react-components';
+import { getExplorerLink } from '@polkadot/react-components/util';
 import { useApi, useIsMountedRef } from '@polkadot/react-hooks';
 import { convertWeight } from '@polkadot/react-hooks/useWeight';
 import { settings } from '@polkadot/ui-settings';
@@ -54,7 +55,7 @@ function transformResult ([[runtimeVersion, events], getBlock, getHeader]: [[Run
 
 function BlockByHash ({ className = '', error, value }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { api } = useApi();
+  const { api, apiUrl } = useApi();
   const mountedRef = useIsMountedRef();
   const [{ events, getBlock, getHeader, runtimeVersion }, setState] = useState<State>({});
   const [blkError, setBlkError] = useState<Error | null | undefined>(error);
@@ -154,7 +155,8 @@ function BlockByHash ({ className = '', error, value }: Props): React.ReactEleme
         [t('extrinsics'), 'start media--1300'],
         [t('state'), 'start media--1200'],
         [t('confidence'), 'start'],
-        [runtimeVersion ? `${runtimeVersion.specName.toString()}/${runtimeVersion.specVersion.toString()}` : undefined, 'media--1000']
+        [runtimeVersion ? `${runtimeVersion.specName.toString()}/${runtimeVersion.specVersion.toString()}` : undefined, 'media--1000'],
+        [t('explorer link'), 'start']
       ]
       : EMPTY_HEADER,
     [getHeader, runtimeVersion, t]
@@ -204,6 +206,13 @@ function BlockByHash ({ className = '', error, value }: Props): React.ReactEleme
                     type='block'
                   />
                 )}
+              </td>
+              <td className='media'>
+                <a
+                  href={getExplorerLink(getHeader.hash.toHex(), 'block', apiUrl)}
+                  rel='noreferrer'
+                  target={'_blank'}
+                >View in explorer</a>
               </td>
             </tr>
           )

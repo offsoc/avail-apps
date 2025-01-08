@@ -1,4 +1,4 @@
-// Copyright 2017-2024 @polkadot/app-explorer authors & contributors
+// Copyright 2017-2025 @polkadot/app-explorer authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { KeyedEvent } from '@polkadot/react-hooks/ctx/types';
@@ -8,6 +8,8 @@ import type { ICompact, INumber } from '@polkadot/types/types';
 import React, { useMemo } from 'react';
 
 import { AddressMini, LinkExternal, styled } from '@polkadot/react-components';
+import { getExplorerLink } from '@polkadot/react-components/util';
+import { useApi } from '@polkadot/react-hooks';
 import { convertWeight } from '@polkadot/react-hooks/useWeight';
 import { CallExpander } from '@polkadot/react-params';
 import { BN, formatNumber } from '@polkadot/util';
@@ -67,6 +69,7 @@ function filterEvents (index: number, events?: KeyedEvent[] | null, maxBlockWeig
 
 function ExtrinsicDisplay ({ blockNumber, className = '', events, index, maxBlockWeight, value, withLink }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
+  const { apiUrl } = useApi();
 
   const link = useMemo(
     () => withLink
@@ -129,6 +132,13 @@ function ExtrinsicDisplay ({ blockNumber, className = '', events, index, maxBloc
           withHash
           withSignature
         />
+        <a
+          href={getExplorerLink(`${blockNumber ? blockNumber.toString() : '0'}-${index}`, 'extrinsic', apiUrl)}
+          rel='noreferrer'
+          target={'_blank'}
+        >
+          {'View in explorer'}
+        </a>
         {link && (
           <a
             className='isDecoded'
