@@ -35,6 +35,7 @@
   "event count": "event count",
   "events": "events",
   "events (last {{n}} blocks)": "events (last {{n}} blocks)",
+  "explorer link": "explorer link",
   "extrinsic count": "extrinsic count",
   "extrinsics": "extrinsics",
   "extrinsics (last {{n}} blocks)": "extrinsics (last {{n}} blocks)",
