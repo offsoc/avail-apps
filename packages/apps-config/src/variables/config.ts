@@ -3,11 +3,11 @@
 // eslint-disable-next-line
 const config: { [network: string]: { url: `wss://${string}`, lcUrl: string } } = {
   mainnet: {
-    lcUrl: process.env.MAINNET_LC || 'https://api.lightclient.mainnet.avail.so/v1',
+    lcUrl: process.env.MAINNET_LC || 'https://api.lightclient.mainnet.avail.so/v2',
     url: process.env.MAINNET_URL as `wss://${string}` || 'wss://mainnet-rpc.avail.so/ws'
   },
   turing: {
-    lcUrl: process.env.TURING_LC || 'https://api.lightclient.turing.avail.so/v1',
+    lcUrl: process.env.TURING_LC || 'https://api.lightclient.turing.avail.so/v2',
     url: process.env.TURING_URL as `wss://${string}` || 'wss://turing-rpc.avail.so/ws'
   }
 };
