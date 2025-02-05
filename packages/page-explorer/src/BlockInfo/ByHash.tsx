@@ -1,6 +1,9 @@
 // Copyright 2017-2025 @polkadot/app-explorer authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment */
+
+import type { AxiosError } from 'axios';
 import type { HeaderExtended } from '@polkadot/api-derive/types';
 import type { KeyedEvent } from '@polkadot/react-hooks/ctx/types';
 import type { V2Weight } from '@polkadot/react-hooks/useWeight';
@@ -118,7 +121,7 @@ function BlockByHash ({ className = '', error, value }: Props): React.ReactEleme
         console.log('Using Light Client at ', LightClientURI);
 
         axios.get(
-          `confidence/${number}`,
+          `blocks/${number}`,
           {
             baseURL: LightClientURI,
             headers: {
@@ -126,19 +129,23 @@ function BlockByHash ({ className = '', error, value }: Props): React.ReactEleme
             }
           }
         ).then((v) => {
-          console.log(v);
-
-          if (v.status !== 200) {
+          if (v.data.confidence !== null) {
+            setConfidence((v.data.confidence as number).toFixed(4) + '%');
+          } else if (v.data.status === 'incomplete') {
+            setConfidence('No Blobs');
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          } else if (v.data.status?.includes('verifying')) {
+            setConfidence(v.data.status);
+          } else {
             setConfidence('ℹ️ Make sure Light Client runs on ' + LightClientURI);
-
-            return;
           }
-
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-          setConfidence(v.data.confidence);
-        }).catch((_) => {
-          setConfidence('ℹ️ Make sure Light Client runs on ' + LightClientURI);
-          console.log('Light client: Called, but failed');
+        }).catch((e: AxiosError) => {
+          if (e.status === 404) {
+            setConfidence('None');
+          } else {
+            setConfidence('ℹ️ Make sure Light Client runs on ' + LightClientURI);
+            console.log('Light client: Called, but failed');
+          }
         });
       })
       .catch((error: Error): void => {
