@@ -275,7 +275,7 @@ export function QueueCtxRoot ({ children }: Props): React.ReactElement<Props> {
 
       queueAction(extractEvents(result));
 
-      if (STATUS_COMPLETE.includes(status)) {
+      if (STATUS_COMPLETE.includes(status) && result?.blockNumber === undefined) {
         setTimeout((): void => {
           const item = txRef.current.find((item) => item.id === id);
 

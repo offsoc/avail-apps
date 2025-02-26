@@ -98,8 +98,11 @@ function renderStatus ({ account, action, id, message, removeItem, status }: Que
   );
 }
 
-function renderItem ({ error, extrinsic, id, removeItem, rpc, status }: QueueTx): React.ReactNode {
+function renderItem ({ error, extrinsic, id, removeItem, result, rpc, status }: QueueTx): React.ReactNode {
   let { method, section } = rpc;
+
+  // eslint-disable-next-line
+  const blockNumber = result?.blockNumber ? (result.blockNumber.toHuman() as string).replaceAll(',','') : null
 
   if (extrinsic) {
     const found = extrinsic.registry.findMetaCall(extrinsic.callIndex);
@@ -138,6 +141,16 @@ function renderItem ({ error, extrinsic, id, removeItem, rpc, status }: QueueTx)
             <div className='status'>
               {error ? (error.message || error.toString()) : status}
             </div>
+            {blockNumber !== undefined && <div className='status'>
+              <a
+                href={`/#/explorer/query/${blockNumber}`}
+                rel='noreferrer'
+                style={{ color: 'inherit', textDecoration: 'underline' }}
+                target='_blank'
+              >
+                Go to tx
+              </a>
+            </div>}
           </div>
         </div>
       </div>
