@@ -141,7 +141,7 @@ function renderItem ({ error, extrinsic, id, removeItem, result, rpc, status }: 
             <div className='status'>
               {error ? (error.message || error.toString()) : status}
             </div>
-            {blockNumber !== undefined && <div className='status'>
+            {blockNumber !== undefined && blockNumber !== null && <div className='status'>
               <a
                 href={`/#/explorer/query/${blockNumber}`}
                 rel='noreferrer'
